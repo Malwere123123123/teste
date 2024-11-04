@@ -16,6 +16,8 @@
             font-family: Arial, sans-serif;
             text-align: center;
             animation: backgroundPulse 3s infinite alternate;
+            position: relative;
+            overflow: hidden; /* Para impedir scroll */
         }
         h1 {
             font-size: 48px;
@@ -81,6 +83,21 @@
             background-color: rgba(0, 0, 0, 0.85);
             border-radius: 10px;
         }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffcc00;
+            font-size: 32px;
+            display: none; /* Oculto inicialmente */
+        }
     </style>
 </head>
 <body class="fade-in">
@@ -93,7 +110,7 @@
         <p class="error">CUIDADO: Seu acesso a dados sensíveis pode estar em risco!</p>
         <p>Recomendamos que você siga as instruções abaixo imediatamente:</p>
         <div class="instructions">
-            <p>1. Desligue seu computador imediatamente!</p>
+            <p>1. Desligue seu dispositivo imediatamente!</p>
             <p>2. Não reinicie o sistema até que o problema seja resolvido.</p>
             <p>3. Entre em contato com um especialista em segurança.</p>
         </div>
@@ -107,8 +124,12 @@
         <p><strong>ALERTA CRÍTICO!</strong></p>
         <p><strong>O malware tomou conta de todo o seu sistema!</strong></p>
         <p>Estamos diante de uma grave situação de segurança.</p>
-        <p><strong>Mantenha a calma e desligue seu computador imediatamente!</strong></p>
+        <p><strong>Mantenha a calma e desligue seu dispositivo imediatamente!</strong></p>
         <p><strong>Procure um profissional de segurança de dados com urgência!</strong></p>
+    </div>
+
+    <div class="overlay" id="overlay">
+        <p>Aguarde enquanto processamos as informações...</p>
     </div>
 
     <script>
@@ -116,12 +137,17 @@
         const timerElement = document.getElementById('timer');
         const mainContent = document.getElementById('mainContent');
         const finalMessage = document.getElementById('finalMessage');
+        const overlay = document.getElementById('overlay');
+
+        // Mostrar overlay ao iniciar o timer
+        overlay.style.display = 'flex';
 
         const countdown = setInterval(() => {
             if (timeLeft <= 0) {
                 clearInterval(countdown);
                 mainContent.style.display = 'none';
                 finalMessage.style.display = 'block';
+                overlay.style.display = 'none'; // Ocultar overlay após o tempo acabar
             } else {
                 timerElement.textContent = timeLeft;
                 timeLeft--;
